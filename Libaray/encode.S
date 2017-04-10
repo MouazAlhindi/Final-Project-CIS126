@@ -8,7 +8,12 @@ table1:
 
              .text
 
+
              .global encode
+
+             .global wrap
+
+             .global decode
              
 
 
@@ -20,10 +25,26 @@ encode: subi r24, 65 ; subtract 'A' from passed parameter ; Use Z register for i
 
              ldi r31,hi8(table1) ; Load high byte of table1's address
 
+             cpi r24, 26 ; compare position to length of list
+
+             brpl wrap ; branch if plus, run the wrap method
+
              add r30,r24 ; Add offset to address in Z register
 
-             adc r31,r1 ; add the carry bit, r1 is 0 (expected)
+             clr r0; clear register 0
+
+             adc r31, r0 ; add the carry bit, r1 is 0 (expected)
              
-             ld r24, z ;
+             ld r24, z ; load position in table to r24
 
              ret
+
+wrap:
+            sub r24, 26;
+
+            ret
+
+decode:
+
+            
+            ret
