@@ -1,9 +1,41 @@
+/*  Source Code for Arduino 1
+ *  This Arduino will be the sender
+ */
+
+//SEND METHODS
+
+//Method that initiates sending sequence
+void sendReadySignal(){
+  
+}
+
+//Method that will send the given char list
+//via serial communication
+void sendStringData(char[] letters){
+  
+}
+
+//RECIEVE METHODS
+
+//Method that listens for correct ready signal
+void listenReadySignal(){
+  
+}
+
+//Methoda that will revieve in a serial communication pattern
+void recieveStringData(){
+  
+}
+
+
+//Setup method
 void setup() {
-  // put your setup code here, to run once:
+
+  Serial.begin(9600);
 
 }
 
+//Loop Method
 void loop() {
-  // put your main code here, to run repeatedly:
 
 }
