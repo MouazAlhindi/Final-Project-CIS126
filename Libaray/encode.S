@@ -79,19 +79,21 @@ decrypt:
 
             ldi r31, hi8(table1) ;
 
-            jmp checkCharDecode
+            call checkCharDecode
 
             ret
 
+
+
 checkCharDecode:
 
-            cpi r31, r24 ;
+            cpi r30, r24 ;
 
             breq loadCharDecode ;
 
             inc r30 ;
 
-            call dycrpt ;
+            call checkCharDecode ;
 
             ret
 
