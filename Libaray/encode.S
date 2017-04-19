@@ -8,8 +8,12 @@ table1:
 
              .text
 
-             
-             .global loadChar
+
+             .global checkCharDecode
+
+             .global loadCharDecode
+
+             .global loadCharEncode
                 
              .global encode
 
@@ -17,7 +21,8 @@ table1:
 
              .global decode
              
-loadChar: 
+loadCharEncode:
+
             ldi r30,lo8(table1) ; Load low byte of table1's address
 
             ldi r31,hi8(table1) ; Load high byte of table1's address
@@ -32,6 +37,23 @@ loadChar:
         
             ret
 
+loadCharDecode:
+
+            ldi r30,lo8(table1) ; Load low byte of table1's address
+
+            ldi r31,hi8(table1) ; Load high byte of table1's address
+
+            sub r30,r24 ; Add offset to address in Z register
+
+            clr r0; clear register 0
+
+            adc r31, r0 ; add the carry bit, r1 is 0 (expected)
+
+            ld r24, z ; load position in table to r24
+
+
+            ret
+
 
 encode: subi r24, 65 ; subtract 'A' from passed parameter ; Use Z register for indirect addressing
 
@@ -41,7 +63,7 @@ encode: subi r24, 65 ; subtract 'A' from passed parameter ; Use Z register for i
 
              brsh wrap ; branch if greater or equal too, run the wrap method
              
-             call loadChar ;
+             call loadCharEncode ;
 
              ret
 
@@ -52,7 +74,24 @@ wrap:
             
             ret
 
-decode:
-        
-            
+decrypt:
+            ldi r30, lo8(table1) ;
+
+            ldi r31, hi8(table1) ;
+
+            jmp checkCharDecode
+
             ret
+
+checkCharDecode:
+
+            cpi r31, r24 ;
+
+            breq loadCharDecode ;
+
+            inc r30 ;
+
+            call dycrpt ;
+
+            ret
+

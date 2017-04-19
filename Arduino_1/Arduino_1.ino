@@ -1,5 +1,9 @@
 /*  Source Code for Arduino 1
- *  This Arduino will be the sender
+ * This Arduino will be...
+ * Sending an encrypted message
+ * Sending an encryption key
+ * encrypting and decrypting messages
+ * sending an encrypted message back
  */
 
 //SEND METHODS
