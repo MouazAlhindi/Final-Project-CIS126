@@ -19,7 +19,7 @@ table1:
 
              .global wrap
 
-             .global decode
+             .global decrypt
              
 loadCharEncode:
 
@@ -79,7 +79,7 @@ decrypt:
 
             ldi r31, hi8(table1) ;
 
-            call checkCharDecode
+            call checkCharDecode ;
 
             ret
 
