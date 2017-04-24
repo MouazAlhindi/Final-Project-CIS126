@@ -1,5 +1,4 @@
            .data ; Baudot code lookup table
-
 table1:
 
              .byte 'G, 'T, 'U, 'Q, 'C, 'L, 'M, 'O, 'Z, 'V, 'K, 'N, 'S ; first half of randomized alphabet
@@ -27,7 +26,7 @@ loadCharEncode:
 
             ldi r30,lo8(table1) ; Load low byte of table1's address
 
-            ldi r31,hi8(table1) ; Load high byte of table1's address
+            ldi r31,hi8(table1) ; Load high byte of table1's address (line 30)
 
             add r30,r24 ; Add offset to address in Z register
 
@@ -41,15 +40,17 @@ loadCharEncode:
 
 loadCharDecode:
 
-            ldi r20, 65 ;
+            clr r20 ;
 
-            add r25, r20 ;
+	    ldi r20, 65;
 
-            sub r25, r22 ;
+	    add r25, r20 ;
+
+	    sub r25, r22 ;
 		
-            cpi r25, 65 ;
+            cpi r25, 65;
 
-            brlo wrapUp ; run the wrapUp method
+            brlo wrapUp ; run the wrapUp method (line 50)
 
             mov r24, r25 ; load position in table to r24
 
@@ -57,8 +58,11 @@ loadCharDecode:
 
 
 wrapUp:
+        clr r28 ;
+	
+	ldi r28, 26 ;
 
-        add r25, 26 ;
+        add r25, r28;
 	
         mov r24, r25 ;
 
@@ -92,9 +96,11 @@ decrypt:
 
             ldi r31,hi8(table1) ; Load high byte of table1's address
 
+	    clr r1 ;
+
             adc r30, r1 ;
 
-            clr r28 ; clear register 0
+            clr r25 ; clear register 25
 		
             call checkCharDecode ;
 	
@@ -103,19 +109,15 @@ decrypt:
 
 checkCharDecode:
 	
-            ld r21, z ;
+            ld r21, z+ ;
 
             cp r21, r24 ;
 
             breq loadCharDecode ;
 
             inc r25 ;
-		
-            inc r30;
 
-            adc r31, r1;
-
-            call checkCharDecode ;
+            rjmp checkCharDecode ;
 
             ret
 
