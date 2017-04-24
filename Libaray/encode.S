@@ -21,7 +21,7 @@ table1:
 
              .global decrypt
 	     
-	     .global wrapUp	     
+             .global wrapUp
              
 loadCharEncode:
 
@@ -41,40 +41,42 @@ loadCharEncode:
 
 loadCharDecode:
 
-            add r20, 65 ; 
+            add r28, 65 ;
 
-	    sub r20, r22 ; 
+            sub r28, r22 ;
 		
-	    cpi r20, 65 ;  
+            cpi r28, 65 ;
 
-	    brlo wrapUp ; run the wrapUp method	    
+            brlo wrapUp ; run the wrapUp method
 
-            ld r24, r20 ; load position in table to r24
+            ld r24, r28 ; load position in table to r24
 
             ret
 
 
 wrapUp:
 
-	add r20, 26 ; 	
+        add r20, 26 ;
 	
-	ld r24, r20 ; 	
+        ld r24, r28 ;
 
-	ret
+        ret
 
 
 
-encode: subi r24, 65 ; subtract 'A' from passed parameter ; Use Z register for indirect addressing
+encode:
 
-             add r24, r22 ;  add offset
+            subi r24, 65 ; subtract 'A' from passed parameter ; Use Z register for indirect addressing
 
-             cpi r24, 26 ; compare position to length of list
+            add r24, r22 ;  add offset
 
-             brsh wrapDown ; branch if greater or equal too, run the wrapDown method
-             
-             call loadCharEncode ;
+            cpi r24, 26 ; compare position to length of list
 
-             ret
+            brsh wrapDown ; branch if greater or equal too, run the wrapDown method
+
+            call loadCharEncode ;
+
+            ret
 
 wrapDown:
             subi r24, 26 ; subtract by 26 and set the char back to the start
@@ -84,36 +86,34 @@ wrapDown:
             ret
 
 decrypt:
-	    ldi r30,lo8(table1) ; Load low byte of table1's address
+            ldi r30,lo8(table1) ; Load low byte of table1's address
 
             ldi r31,hi8(table1) ; Load high byte of table1's address
 
-	    adc r30, r1 ;
+            adc r30, r1 ;
 
-            clr r20 ; clear register 0
+            clr r28 ; clear register 0
 		
-	    call checkCharDecode ;    
+            call checkCharDecode ;
 	
             ret
 
 
 checkCharDecode:
-
-		 
 	
-		ld r21, z ;
-            
-	        cp r21, r24 ;
+            ld r21, z ;
 
-            	breq loadCharDecode ;
+            cp r21, r24 ;
 
-            	inc r20 ;
+            breq loadCharDecode ;
+
+            inc r28 ;
 		
-		inc r30;
+            inc r30;
 
-		adc r31, r1;
+            adc r31, r1;
 
- 	        call checkCharDecode ;
+            call checkCharDecode ;
 
-                ret
+            ret
 
