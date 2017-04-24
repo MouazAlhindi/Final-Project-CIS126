@@ -41,24 +41,26 @@ loadCharEncode:
 
 loadCharDecode:
 
-            add r28, 65 ;
+            ldi r20, 65 ;
 
-            sub r28, r22 ;
+            add r25, r20 ;
+
+            sub r25, r22 ;
 		
-            cpi r28, 65 ;
+            cpi r25, 65 ;
 
             brlo wrapUp ; run the wrapUp method
 
-            ld r24, r28 ; load position in table to r24
+            mov r24, r25 ; load position in table to r24
 
             ret
 
 
 wrapUp:
 
-        add r20, 26 ;
+        add r25, 26 ;
 	
-        ld r24, r28 ;
+        mov r24, r25 ;
 
         ret
 
@@ -107,7 +109,7 @@ checkCharDecode:
 
             breq loadCharDecode ;
 
-            inc r28 ;
+            inc r25 ;
 		
             inc r30;
 
