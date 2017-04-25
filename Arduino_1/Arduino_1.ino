@@ -28,7 +28,7 @@ void sendLetter(char x){
 
   if(let.length() == 8){
     for(int i = 0; let.length(); i++){
-      if(String.equals("0")){
+      if(let.equals("0")){
         digitalWrite(senderPin, HIGH);
         delay(500);
       } else {
