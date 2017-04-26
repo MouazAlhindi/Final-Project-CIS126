@@ -18,10 +18,16 @@ String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
 
 //VALIDATE USER FUNCTION
 void validateUser(String x){
+  Serial.println("Validating User...");
   for(int i = 0; i < sizeof(userID); i++){
       if(userID[i].equals(x)){
         valid = true;
+        Serial.println("User Validation Complete");
       }
+  }
+
+  if(valid == false){
+    Serial.println("User Validation Failed. Try Again!");
   }
 }
 
@@ -77,14 +83,8 @@ void receiveEvent(int howMany) {
   if(valid == false){
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
   }
-
-  char incomingMessage[Wire.available()];
-  int count = 0;
   
-  while (1 < Wire.available()) { // loop through all but the last
-      
-      incomingMessage[count] = (char)Wire.read();
-      count++;
+  while (0 < Wire.available() && valid) { // loop through all but the las
       
       char c = Wire.read(); // receive byte as a character
       Serial.print(c);         // print the character
