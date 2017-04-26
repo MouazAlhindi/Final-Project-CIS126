@@ -12,12 +12,12 @@
 
 
 //Variables
-int reciverPin;
-int senderPin;
 int encryptionKey;
 char encryptedMessage[140];
 char decryptedMessage[140];
 byte x = 1;
+boolean valid = false;
+String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
 
 
 //SEND METHODS
@@ -50,9 +50,24 @@ void setup() {
 
 }
 
+void validateUser(String x){
+  for(int i = 0; i < sizeof(userID); i++){
+      if(userID[i].equals(x)){
+        valid = true;
+      }
+  }
+}
+
 //Loop Method
 void loop() {
-  if(Serial.available() > 0){
+
+  //Validateing the user
+  if(valid == false && Serial.available() > 0){
+    String user = (String)Serial.read();
+    validateUser(user);
+  }
+  
+  if(Serial.available() > 0 && valid){
     byte x = Serial.read();
     Wire.beginTransmission(8); // transmit to device #8
     Wire.write("message received");        // sends five bytes
