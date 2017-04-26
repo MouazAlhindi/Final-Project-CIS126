@@ -34,16 +34,13 @@ void loop() {
 }
 
 void receiveEvent(int howMany) {
+  if(valid == false){
+      Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
+  }
   
   while (1 < Wire.available()) { // loop through all but the last
-    if(valid == false){
-      char h = Wire.read();
-      Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
-    } else {
       char c = Wire.read(); // receive byte as a character
       Serial.print(c);         // print the character
-    }
   }
-    int x = Wire.read();    // receive byte as an integer
-    Serial.println(x);         // print the integer
+  
 }

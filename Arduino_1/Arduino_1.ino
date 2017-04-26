@@ -51,10 +51,18 @@ void setup() {
 }
 
 void validateUser(String x){
+  
+  Serial.println("Validating User....");
+  
   for(int i = 0; i < sizeof(userID); i++){
       if(userID[i].equals(x)){
         valid = true;
+        Serial.println("User Validation Completed");
       }
+  }
+  
+  if(valid == false){
+       Serial.println("User Validation Failed. Try Again!");
   }
 }
 
@@ -63,7 +71,7 @@ void loop() {
 
   //Validateing the user
   if(valid == false && Serial.available() > 0){
-    String user = (String)Serial.read();
+    String user = Serial.readString();
     validateUser(user);
   }
 
@@ -71,7 +79,6 @@ void loop() {
   if(Serial.available() > 0 && valid){
     byte x = Serial.read();
     Wire.beginTransmission(8); // transmit to device #8
-    Wire.write("message received");        // sends five bytes
     Wire.write(x);              // sends one byte
     Wire.endTransmission();    // stop transmitting
   }
