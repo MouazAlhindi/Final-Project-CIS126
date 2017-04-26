@@ -10,18 +10,22 @@
  */
 
 //Variables
-int encryptionKey;
+
 char encryptedMessage[140];
 char decryptedMessage[140];
-byte x = 1;
 boolean valid = false;  //boolean for validity
-String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };  
+String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
+String currentUser;
+int encryptionKey; 
 String messageInput;  //user input
 
 //SEND METHODS
 
-void setEncryptionKey(char encrypt){
-  switch(encrypt){
+void setEncryptionKey(){
+
+  char charE = currentUser.charAt(0);
+  
+  switch(charE){
     case 'A':
        encryptionKey = 1;
        break;
@@ -34,31 +38,30 @@ void setEncryptionKey(char encrypt){
     case 'D':
        encryptionKey = 4;
        break;
+    case 'E':
+       encryptionKey = 5;
+       break;
   }
 }
 
-
-
 //Setup method
 void setup() {
-
   Wire.begin();
-  
   Serial.begin(9600);
-
 }
 
 void validateUser(String x){
-  
+ 
   Serial.println("Validating User....");
   
   for(int i = 0; i < sizeof(userID); i++){
       if(userID[i].equals(x)){
         valid = true;
+        currentUser = userID[i];
+        setEncryptionKey();
         Serial.println("User Validation Completed");
       }
   }
-  
   if(valid == false){
        Serial.println("User Validation Failed. Try Again!");
   }
@@ -72,7 +75,6 @@ void sendEncryptedMessage(String s){
   //Encrypts the Data
   if(Serial.available() > 0 && valid){
     messageInput = Serial.readString();
-    messageI
     
     byte x = Serial.read();
     Wire.beginTransmission(8); // transmit to device #8
@@ -82,9 +84,6 @@ void sendEncryptedMessage(String s){
     //Wire.endTransmission();    // stop transmitting
   }
 }
-
-
-
 
 //Loop Method
 void loop() {

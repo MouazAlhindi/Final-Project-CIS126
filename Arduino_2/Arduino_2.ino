@@ -47,7 +47,11 @@ void encryptMessage(String mess){
   for(int i = 0; i < mess.length(); i++){
     encrypt[i] = mess.charAt(i);
   }
-  message = encrypt;
+  encryptedMessage = encrypt;
+}
+
+void sendMessage(){
+  
 }
 
 //SETUP FUNCTION
