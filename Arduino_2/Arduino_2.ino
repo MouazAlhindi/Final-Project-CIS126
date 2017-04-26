@@ -9,6 +9,10 @@
  * sending an encrypted message back
  */
 
+//VARS
+String message;
+String encryptedMessage;
+int encryptionKey;
 boolean valid = false;
 String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
 
@@ -19,6 +23,31 @@ void validateUser(String x){
         valid = true;
       }
   }
+}
+
+//FUNCTION USED TO SET THE ENCRYPTION KEY
+void setEncryptionKey(int x){
+  encryptionKey = x;
+}
+
+//FUNCTION THAT DECODES AN ENCRYPTED MESSAGE
+void decodeMessage(String mess){
+  encryptedMessage = mess;
+  char decrypt[mess.length()];
+  for(int i = 0; i < mess.length(); i++){
+    decrypt[i] = mess.charAt(i);
+  }
+  message = decrypt;
+}
+
+//FUNCTION THAT ENCODES A REGULAR MESSAGE
+void encryptMessage(String mess){
+  message = mess;
+  char encrypt[mess.length()];
+  for(int i = 0; i < mess.length(); i++){
+    encrypt[i] = mess.charAt(i);
+  }
+  message = encrypt;
 }
 
 //SETUP FUNCTION
