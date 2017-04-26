@@ -66,7 +66,8 @@ void loop() {
     String user = (String)Serial.read();
     validateUser(user);
   }
-  
+
+  //Send the Data
   if(Serial.available() > 0 && valid){
     byte x = Serial.read();
     Wire.beginTransmission(8); // transmit to device #8

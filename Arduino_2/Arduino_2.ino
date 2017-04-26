@@ -9,7 +9,16 @@
  * sending an encrypted message back
  */
 
+boolean valid = false;
+String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
 
+void validateUser(String x){
+  for(int i = 0; i < sizeof(userID); i++){
+      if(userID[i].equals(x)){
+        valid = true;
+      }
+  }
+}
 
 void setup() {
 
@@ -25,10 +34,16 @@ void loop() {
 }
 
 void receiveEvent(int howMany) {
+  
   while (1 < Wire.available()) { // loop through all but the last
-    char c = Wire.read(); // receive byte as a character
-    Serial.print(c);         // print the character
+    if(valid == false){
+      char h = Wire.read();
+      Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
+    } else {
+      char c = Wire.read(); // receive byte as a character
+      Serial.print(c);         // print the character
+    }
   }
-  int x = Wire.read();    // receive byte as an integer
-  Serial.println(x);         // print the integer
+    int x = Wire.read();    // receive byte as an integer
+    Serial.println(x);         // print the integer
 }
