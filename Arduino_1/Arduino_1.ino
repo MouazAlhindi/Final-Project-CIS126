@@ -9,16 +9,14 @@
  * sending an encrypted message back
  */
 
-
-
 //Variables
 int encryptionKey;
 char encryptedMessage[140];
 char decryptedMessage[140];
 byte x = 1;
-boolean valid = false;
-String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
-
+boolean valid = false;  //boolean for validity
+String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };  
+String messageInput;  //user input
 
 //SEND METHODS
 
@@ -66,10 +64,32 @@ void validateUser(String x){
   }
 }
 
+
+void sendEncryptedMessage(String s){
+
+  s.toUpperCase();
+
+  //Encrypts the Data
+  if(Serial.available() > 0 && valid){
+    messageInput = Serial.readString();
+    messageI
+    
+    byte x = Serial.read();
+    Wire.beginTransmission(8); // transmit to device #8
+    
+    
+    byte c = encode(x, encryptionKey);  // sends one byte and encrypts it
+    //Wire.endTransmission();    // stop transmitting
+  }
+}
+
+
+
+
 //Loop Method
 void loop() {
 
-  //Validateing the user
+  //Validating the user
   if(valid == false && Serial.available() > 0){
     String user = Serial.readString();
     validateUser(user);
