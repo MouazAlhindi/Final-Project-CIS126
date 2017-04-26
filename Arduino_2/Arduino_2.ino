@@ -73,7 +73,15 @@ void receiveEvent(int howMany) {
   if(valid == false){
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
   }
+
+  char incomingMessage[Wire.available()];
+  int count = 0;
+  
   while (1 < Wire.available()) { // loop through all but the last
+      
+      incomingMessage[count] = (char)Wire.read();
+      count++;
+      
       char c = Wire.read(); // receive byte as a character
       Serial.print(c);         // print the character
   }
