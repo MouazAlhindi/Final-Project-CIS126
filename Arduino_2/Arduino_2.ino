@@ -1,3 +1,6 @@
+#include <encode.h>
+#include <Wire.h>
+
 /*  Source Code for Arduino 2
  * This Arduino will be...
  * Reciving an encrypted message
@@ -6,49 +9,22 @@
  * sending an encrypted message back
  */
 
-String[] userList = new String[10];
-int idCounter = 0;
-boolean authorization = false;
-
-//will take in a user ID and will allow access to the device
-boolean authenticateUser(String u){
-  for(String s: userList){
-    if(s == u){
-      idCounter++;
-    }
+void receiveEvent(int y){
+  while(Wire.available() > 1){
+    byte x = Wire.read();
+    Serial.println(x);
   }
-
-  if(idCounter == 10)
-  {
-    Serial.println("User Authentication: Access Granted");
-    authorization = true;
-  }
-
-  return authorization;
 }
-
-void recieveStringData(){
-  
-}
-
-
-void updateStringData(){
-  
-}
-
-
-
-void sendStringData(){
-  
-}
-
 
 void setup() {
 
+  Wire.begin(8);
+  Wire.onReceive(receiveEvent);
+  
   Serial.begin(9600);
 }
 
 void loop() {
- 
+ delay(100);
 
 }
