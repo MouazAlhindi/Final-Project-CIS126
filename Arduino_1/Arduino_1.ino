@@ -44,7 +44,7 @@ void setEncryptionKey(char encrypt){
 //Setup method
 void setup() {
 
-  Wire.begin()
+  Wire.begin();
   
   Serial.begin(9600);
 
@@ -52,11 +52,11 @@ void setup() {
 
 //Loop Method
 void loop() {
-  Wire.beginTransmission(8);
-  Wire.write("x is ");
-  Wire.write(x);
-  Wire.endTransmission();
-
-  x++;
-  delay(500);
+  if(Serial.available() > 0){
+    byte x = Serial.read();
+    Wire.beginTransmission(8); // transmit to device #8
+    Wire.write("message received");        // sends five bytes
+    Wire.write(x);              // sends one byte
+    Wire.endTransmission();    // stop transmitting
+  }
 }

@@ -9,12 +9,7 @@
  * sending an encrypted message back
  */
 
-void receiveEvent(int y){
-  while(Wire.available() > 1){
-    byte x = Wire.read();
-    Serial.println(x);
-  }
-}
+
 
 void setup() {
 
@@ -27,4 +22,13 @@ void setup() {
 void loop() {
  delay(100);
 
+}
+
+void receiveEvent(int howMany) {
+  while (1 < Wire.available()) { // loop through all but the last
+    char c = Wire.read(); // receive byte as a character
+    Serial.print(c);         // print the character
+  }
+  int x = Wire.read();    // receive byte as an integer
+  Serial.println(x);         // print the integer
 }
