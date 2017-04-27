@@ -67,15 +67,18 @@ void validateUser(String x){
   }
 }
 
-void clearMessages(){
-  encryptedMessage[64];
-  decryptedMessage[64];
-  
+void clearMessage(){
+  //encryptedMessage[64];
+  //decryptedMessage[64];
+  for( int i = 0; i < sizeof(encryptedMessage);  ++i ){
+   encryptedMessage[i] = (char)0;
+   decryptedMessage[i] = (char)0;
+  }
 }
 
 void sendEncryptedMessage(String s){
   s.toUpperCase();
-  clearMessages();
+  clearMessage();
   for (int i = 0; i < s.length(); i++){
        byte x = (byte)(s.charAt(i)); 
        encryptedMessage[i] = (char)encode(x, encryptionKey);  //adds encrypted byte to encrypted message  
@@ -97,8 +100,7 @@ void loop() {
     String message = Serial.readString();
     sendEncryptedMessage(message);
     Wire.beginTransmission(8); // transmit to device #8
-    Wire.write(encryptedMessage);              // sends one byte
+    Wire.write(encryptedMessage);   // sends one byte
     Wire.endTransmission();    // stop transmitting
-    Serial.println(encryptionKey);
   }
 }

@@ -64,8 +64,13 @@ void setEncryptionKey(int x){
 }
 
 void clearMessages(){
-  message[64];
-  encryptedMessage[64];
+  //message[64];
+  //encryptedMessage[64];
+  for( int i = 0; i < sizeof(encryptedMessage);  ++i ){
+   encryptedMessage[i] = (char)0;
+   message[i] = (char)0;
+  }
+   
 }
 
 //FUNCTION THAT DECODES AN ENCRYPTED MESSAGE
@@ -119,9 +124,11 @@ void receiveEvent(int howMany) {
       
       char c = Wire.read(); // receive byte as a character
       encryptedMessage[count] = c;
+      Serial.println(c);
       count++;
   }
 
+  
   decodeMessage();
   
   Serial.println("Message Recvied");
