@@ -10,7 +10,7 @@
  */
 
 //Variables
-
+int charCount = 64;
 char encryptedMessage[64];
 char decryptedMessage[64];
 boolean valid = false;  //boolean for validity
@@ -67,10 +67,17 @@ void validateUser(String x){
   }
 }
 
+void clearMessages(){
+  for(int i = 0; i < sizeof(encryptedMessage); i++){
+    encryptedMessage[i] = "";
+    decryptedMessage[i] = "";
+  }
+  
+}
 
 void sendEncryptedMessage(String s){
   s.toUpperCase();
-  encryptedMessage[64];
+  clearMessages();
   for (int i = 0; i < s.length(); i++){
        byte x = (byte)(s.charAt(i)); 
        encryptedMessage[i] = (char)encode(x, encryptionKey);  //adds encrypted byte to encrypted message  
