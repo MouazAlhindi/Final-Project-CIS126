@@ -87,7 +87,7 @@ void receiveEvent(int howMany) {
   while (0 < Wire.available() && valid) { // loop through all but the last
       
       char c = Wire.read(); // receive byte as a character
-      Serial.print(c);         // print the character
+      Serial.println(c);         // print the character
   }
   
 }

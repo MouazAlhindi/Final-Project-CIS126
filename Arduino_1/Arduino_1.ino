@@ -68,10 +68,8 @@ void validateUser(String x){
 }
 
 void clearMessages(){
-  for(int i = 0; i < sizeof(encryptedMessage); i++){
-    encryptedMessage[i] = "";
-    decryptedMessage[i] = "";
-  }
+  encryptedMessage[64];
+  decryptedMessage[64];
   
 }
 
