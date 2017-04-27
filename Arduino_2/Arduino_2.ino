@@ -10,11 +10,36 @@
  */
 
 //VARS
-String message;
-String encryptedMessage;
+char message[64];
+char encryptedMessage[64];
 int encryptionKey;
 boolean valid = false;
 String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
+String currentUser;
+
+//SET ENCRYPTION KEY
+void setEncryptionKey(){
+
+  char charE = currentUser.charAt(0);
+  
+  switch(charE){
+    case 'A':
+       encryptionKey = 1;
+       break;
+    case 'B':
+       encryptionKey = 2;
+       break;
+    case 'C':
+       encryptionKey = 3;
+       break;
+    case 'D':
+       encryptionKey = 4;
+       break;
+    case 'E':
+       encryptionKey = 5;
+       break;
+  }
+}
 
 //VALIDATE USER FUNCTION
 void validateUser(String x){
@@ -22,6 +47,7 @@ void validateUser(String x){
   for(int i = 0; i < sizeof(userID); i++){
       if(userID[i].equals(x)){
         valid = true;
+        currentUser = userID[i];
         Serial.println("User Validation Complete");
       }
   }
@@ -36,24 +62,29 @@ void setEncryptionKey(int x){
   encryptionKey = x;
 }
 
+void clearMessages(){
+  message[64];
+  encryptedMessage[64];
+}
+
 //FUNCTION THAT DECODES AN ENCRYPTED MESSAGE
-void decodeMessage(String mess){
-  encryptedMessage = mess;
-  char decrypt[mess.length()];
+void decodeMessage(){
+  String mess = encryptedMessage;
+  char decr[mess.length()];
   for(int i = 0; i < mess.length(); i++){
-    decrypt[i] = mess.charAt(i);
+    decr[i] = mess.charAt(i);
+    message[i] = decrypt(decr[i], encryptionKey);
   }
-  message = decrypt;
 }
 
 //FUNCTION THAT ENCODES A REGULAR MESSAGE
-void encryptMessage(String mess){
-  message = mess;
-  char encrypt[mess.length()];
+void encryptMessage(){
+  String mess = message;
+  char encr[mess.length()];
   for(int i = 0; i < mess.length(); i++){
-    encrypt[i] = mess.charAt(i);
+    encr[i] = mess.charAt(i);
+    encryptedMessage[i] = encode(encr[i], encryptionKey);
   }
-  encryptedMessage = encrypt;
 }
 
 void sendMessage(){
@@ -83,11 +114,20 @@ void receiveEvent(int howMany) {
   if(valid == false){
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
   }
+
+  int count = 0;
   
   while (0 < Wire.available() && valid) { // loop through all but the last
       
       char c = Wire.read(); // receive byte as a character
-      Serial.println(c);         // print the character
+      encryptedMessage[count] = c;
+      count++;
   }
+
+  Serial.println("Message Recvied");
+  Serial.println("Encrypted Format: ");
+  Serial.print(encryptedMessage);
+  Serial.println("Decrypted Format: ");
+  Serial.print(message);
   
 }
