@@ -70,6 +70,7 @@ void validateUser(String x){
 
 void sendEncryptedMessage(String s){
   s.toUpperCase();
+  encryptedMessage[64];
   for (int i = 0; i < s.length(); i++){
        byte x = (byte)(s.charAt(i)); 
        encryptedMessage[i] = (char)encode(x, encryptionKey);  //adds encrypted byte to encrypted message  
