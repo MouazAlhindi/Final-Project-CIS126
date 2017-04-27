@@ -99,5 +99,6 @@ void loop() {
     Wire.beginTransmission(8); // transmit to device #8
     Wire.write(encryptedMessage);              // sends one byte
     Wire.endTransmission();    // stop transmitting
+    Serial.println(encryptionKey);
   }
 }

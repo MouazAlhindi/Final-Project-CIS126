@@ -48,7 +48,8 @@ void validateUser(String x){
       if(userID[i].equals(x)){
         valid = true;
         currentUser = userID[i];
-        Serial.println("User Validation Complete");
+        setEncryptionKey();
+        Serial.println("User Validation Completed");
       }
   }
 
@@ -87,10 +88,6 @@ void encryptMessage(){
   }
 }
 
-void sendMessage(){
-  
-}
-
 //SETUP FUNCTION
 void setup() {
   Wire.begin(8);
@@ -115,6 +112,7 @@ void receiveEvent(int howMany) {
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
   }
 
+  clearMessages();
   int count = 0;
   
   while (0 < Wire.available() && valid) { // loop through all but the last
@@ -124,10 +122,10 @@ void receiveEvent(int howMany) {
       count++;
   }
 
+  decodeMessage();
+  
   Serial.println("Message Recvied");
-  Serial.println("Encrypted Format: ");
-  Serial.print(encryptedMessage);
-  Serial.println("Decrypted Format: ");
-  Serial.print(message);
+  Serial.println("Encrypted Format: " + (String)(encryptedMessage));
+  Serial.println("Decrypted Format: " + (String)(message));
   
 }
