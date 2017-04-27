@@ -78,13 +78,13 @@ void loop() {
 
 //RECIEVE EVENT FUNCTION
 //IS CALLED EVERYTIME THE MASTER SENDER
-//TRYS TO COMMUNIFCATE WITH THE 
+//TRYS TO COMMUNICATE WITH THE 
 void receiveEvent(int howMany) {
   if(valid == false){
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
   }
   
-  while (0 < Wire.available() && valid) { // loop through all but the las
+  while (0 < Wire.available() && valid) { // loop through all but the last
       
       char c = Wire.read(); // receive byte as a character
       Serial.print(c);         // print the character
