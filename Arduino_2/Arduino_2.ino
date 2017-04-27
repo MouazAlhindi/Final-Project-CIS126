@@ -98,6 +98,10 @@ void setup() {
   Wire.begin(8);
   Wire.onReceive(receiveEvent);
   Serial.begin(9600);
+
+  pinMode(11, OUTPUT);
+  digitalWrite(11, LOW);
+  
 }
 
 //MAIN LOOP FUNCTION

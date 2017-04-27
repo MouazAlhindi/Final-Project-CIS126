@@ -19,6 +19,10 @@ String currentUser;
 int encryptionKey; 
 String messageInput;  //user input
 
+
+
+
+
 //SEND METHODS
 
 void setEncryptionKey(){
@@ -48,6 +52,8 @@ void setEncryptionKey(){
 void setup() {
   Wire.begin();
   Serial.begin(9600);
+  pinMode(11, OUTPUT);
+  digitalWrite(11, LOW);
 }
 
 void validateUser(String x){
@@ -56,6 +62,7 @@ void validateUser(String x){
   
   for(int i = 0; i < sizeof(userID); i++){
       if(userID[i].equals(x)){
+        
         valid = true;
         currentUser = userID[i];
         setEncryptionKey();
@@ -63,6 +70,7 @@ void validateUser(String x){
       }
   }
   if(valid == false){
+       
        Serial.println("User Validation Failed. Try Again!");
   }
 }
