@@ -125,6 +125,16 @@ void setup() {
   digitalWrite(12, HIGH);
 }
 
+void blinkNotValid(){
+  int count = 4;
+
+  while(count > 0){
+    digitalWrite(12, LOW);
+    delay(delayLED);
+    digitalWrite(12, HIGH);
+  }
+}
+
 void blinkRecieve(){
     int count = 6;
      
@@ -155,6 +165,7 @@ void loop() {
 void receiveEvent(int howMany) {
   if(valid == false){
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
+      blinkNotValid();
   }
 
   clearMessages(); //Clear char arrays that hold 
@@ -167,10 +178,12 @@ void receiveEvent(int howMany) {
       count++; //increment count var
   }
 
-  blinkRecieve();
-  decodeMessage(); //Call method to decode the recieved incryption String
-  //Print format
-  Serial.println("Message Recvied");
-  Serial.println("Encrypted Format: " + (String)(encryptedMessage));
-  Serial.println("Decrypted Format: " + (String)(message));
+  if(valid){
+    blinkRecieve();
+    decodeMessage(); //Call method to decode the recieved incryption String
+    //Print format
+    Serial.println("Message Recvied");
+    Serial.println("Encrypted Format: " + (String)(encryptedMessage));
+    Serial.println("Decrypted Format: " + (String)(message));
+  }
 }
