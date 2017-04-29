@@ -160,8 +160,14 @@ void loop() {
     blinkSend();
 
     Wire.requestFrom(8, 1);
-    int key = (int)Wire.read();
-    Serial.println("Message Recieved by Slave Device");
-    Serial.println("value of encryption Key: " + (String)key);
+    int slaveKey = (int)Wire.read();
+
+    if(slaveKey == encryptionKey){
+      Serial.println("Message Recieved by Slave Device");
+      Serial.println("value of encryption Key: " + (String)key);
+    } else {
+      Serial.println("WARNING: Message Recieved by slave Device");
+      Serial.println("Slave device has wrong encryption key");
+    }
   }
 }
