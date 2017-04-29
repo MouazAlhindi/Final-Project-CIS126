@@ -10,17 +10,25 @@
  */
 
 //VARS
-char message[64];
-char encryptedMessage[64];
-int encryptionKey;
-boolean valid = false;
-String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
-String currentUser;
+char message[64]; // char array that holds decrypted message
+char encryptedMessage[64]; //char array that hold encrypted message
+int encryptionKey; // Encryption key that is a factor to the encryption logic
+boolean valid = false; // user validation of hardware
 
-//SET ENCRYPTION KEY
+/* List of user IDs. 
+ * Each user id holds a diffrent encryption key
+ * This will improve security if one of the user ID is compramised
+ * IMPORTANT NOTE: Both arduinos should use the same user ID to beable to communicate
+ */
+String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" };
+String currentUser; // String that holds the current User ID
+
+/*SET ENCRYPTION KEY
+ * Logic that determines the encryption key based off the userID
+ */
 void setEncryptionKey(){
 
-  char charE = currentUser.charAt(0);
+  char charE = currentUser.charAt(0); // char that holds the first char of the current user
   
   switch(charE){
     case 'A':
@@ -41,7 +49,11 @@ void setEncryptionKey(){
   }
 }
 
-//VALIDATE USER FUNCTION
+/* VALIDATE USER FUNCTION
+ * Takes a string parameter that compares the string
+ * to the registered users in the system.
+ * Logic to validate the users
+ */
 void validateUser(String x){
   Serial.println("Validating User...");
   for(int i = 0; i < sizeof(userID); i++){
@@ -58,22 +70,22 @@ void validateUser(String x){
   }
 }
 
-//FUNCTION USED TO SET THE ENCRYPTION KEY
-void setEncryptionKey(int x){
-  encryptionKey = x;
-}
-
+/* Clear Message Function
+ * Logic that clears the chars that are already in the
+ * arrays that hold the encrypted and decrepted string
+ * from the previous message and set each char to null
+ */
 void clearMessages(){
-  //message[64];
-  //encryptedMessage[64];
   for( int i = 0; i < sizeof(encryptedMessage);  ++i ){
    encryptedMessage[i] = (char)0;
    message[i] = (char)0;
   }
-   
 }
 
-//FUNCTION THAT DECODES AN ENCRYPTED MESSAGE
+/* FUNCTION THAT DECODES AN ENCRYPTED MESSAGE
+ * Function that uses the library File encode.h
+ * Will use the externed method decrypt(char, Key);
+ */
 void decodeMessage(){
   String mess = encryptedMessage;
   char decr[mess.length()];
@@ -83,7 +95,10 @@ void decodeMessage(){
   }
 }
 
-//FUNCTION THAT ENCODES A REGULAR MESSAGE
+/* FUNCTION THAT ENCODES A REGULAR MESSAGE
+ * function that uses the libaray file encode.h
+ * will use the externed method encode(char, key);
+ */
 void encryptMessage(){
   String mess = message;
   char encr[mess.length()];
@@ -121,20 +136,20 @@ void receiveEvent(int howMany) {
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
   }
 
-  clearMessages();
-  int count = 0;
+  clearMessages(); //Clear char arrays that hold 
+  int count = 0; //Var for loop logic
   
   while (0 < Wire.available() && valid) { // loop through all but the last
       
       char c = Wire.read(); // receive byte as a character
-      encryptedMessage[count] = c;
-      Serial.println(c);
-      count++;
+      encryptedMessage[count] = c; // save the received encrypted chars in array
+      count++; //increment count var
   }
 
   
-  decodeMessage();
-  
+  decodeMessage(); //Call method to decode the recieved incryption String
+
+  //Print format
   Serial.println("Message Recvied");
   Serial.println("Encrypted Format: " + (String)(encryptedMessage));
   Serial.println("Decrypted Format: " + (String)(message));
