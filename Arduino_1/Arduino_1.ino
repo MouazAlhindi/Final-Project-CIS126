@@ -17,7 +17,7 @@ String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" }; //list of ver
 String currentUser; // string that holds the current user
 int encryptionKey; // holds the encryption key
 String messageInput;  //user input
-int delayLED = 200;  //delay for blinking LED
+int delayLED = 100;  //delay for blinking LED
 
 //SEND METHODS
 
@@ -130,6 +130,7 @@ void blinkNotValid(){
 void setup() {
   Wire.begin();
   Serial.begin(9600);
+  
 
   pinMode(13, OUTPUT);  //green LED
   pinMode(12, OUTPUT);  //red LED
@@ -157,5 +158,10 @@ void loop() {
     Wire.endTransmission();    // stop transmitting
 
     blinkSend();
+
+    Wire.requestFrom(8, 1);
+    int key = (int)Wire.read();
+    Serial.println("Message Recieved by Slave Device");
+    Serial.println("value of encryption Key: " + (String)key);
   }
 }

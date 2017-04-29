@@ -14,7 +14,7 @@ char message[64]; // char array that holds decrypted message
 char encryptedMessage[64]; //char array that hold encrypted message
 int encryptionKey; // Encryption key that is a factor to the encryption logic
 boolean valid = false; // user validation of hardware
-int delayLED = 500;  //delay for blinking LED 
+int delayLED = 100;  //delay for blinking LED 
 
 
 /* List of user IDs. 
@@ -143,6 +143,7 @@ void blinkRecieve(){
 void setup() {
   Wire.begin(8);
   Wire.onReceive(receiveEvent);
+  Wire.onRequest(requestEvent);
   Serial.begin(9600);
 
   pinMode(13, OUTPUT);
@@ -188,6 +189,8 @@ void receiveEvent(int howMany) {
     Serial.println("Message Recvied");
     Serial.println("Encrypted Format: " + (String)(encryptedMessage));
     Serial.println("Decrypted Format: " + (String)(message));
+
+    Wire.write("Message Recieved");
   } else {
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
       blinkNotValid();
@@ -200,3 +203,8 @@ void receiveEvent(int howMany) {
       }
   }
 }
+
+void requestEvent(){
+  Wire.write(encryptionKey);
+}
+
