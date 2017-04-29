@@ -17,6 +17,7 @@ String userID[] = {"Alpha", "Bravo", "Charlie", "Delta", "Echo" }; //list of ver
 String currentUser; // string that holds the current user
 int encryptionKey; // holds the encryption key
 String messageInput;  //user input
+int delayLED = 200;  //delay for blinking LED
 
 //SEND METHODS
 
@@ -57,6 +58,8 @@ void validateUser(String x){
   
   for(int i = 0; i < sizeof(userID); i++){
       if(userID[i].equals(x)){
+        digitalWrite(12, LOW);
+        digitalWrite(13, HIGH);
         valid = true;
         currentUser = userID[i];
         setEncryptionKey();
@@ -64,6 +67,7 @@ void validateUser(String x){
       }
   }
   if(valid == false){
+       digitalWrite(13, LOW);
        Serial.println("User Validation Failed. Try Again!");
   }
 }
@@ -86,7 +90,7 @@ void clearMessage(){
  *  loop through each char in the string and encrypt the message
  *  store encrypted message in the encryptedMessage[]
  */
-void sendEncryptedMessage(String s){
+void setEncryptedMessage(String s){
   s.toUpperCase();
   clearMessage();
   for (int i = 0; i < s.length(); i++){
@@ -95,11 +99,31 @@ void sendEncryptedMessage(String s){
     }
   }
 
+void blinkSend(){
+  int count = 6;
+     
+     //while loop for blinking green LED
+     while(count > 0){
+      delay(delayLED);
+      digitalWrite(13, LOW);
+      digitalWrite(12, HIGH);
+      delay(delayLED);
+      digitalWrite(13, HIGH);
+      digitalWrite(12, LOW);
+      count--;
+     }
+}
+
 
 //Setup method
 void setup() {
   Wire.begin();
   Serial.begin(9600);
+
+  pinMode(13, OUTPUT);  //green LED
+  pinMode(12, OUTPUT);  //red LED
+  digitalWrite(13, LOW);
+  digitalWrite(12, HIGH);
 }
 
 //Main Loop Method
@@ -112,11 +136,14 @@ void loop() {
   }
 
   //Send the Data
-  if(Serial.available() > 0 && valid){
+  if(Serial.available() > 0 && valid){    
+    
     String message = Serial.readString(); // reads string that is inputed by the user
-    sendEncryptedMessage(message); // method to encrypt the method
+    setEncryptedMessage(message); // method to encrypt the method
     Wire.beginTransmission(8); // transmit to device #8 (Arduino 2)
     Wire.write(encryptedMessage);   // sends one char/byte at a time
     Wire.endTransmission();    // stop transmitting
+
+    blinkSend();
   }
 }
