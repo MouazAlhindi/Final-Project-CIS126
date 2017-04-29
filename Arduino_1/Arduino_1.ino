@@ -69,6 +69,7 @@ void validateUser(String x){
   if(valid == false){
        digitalWrite(13, LOW);
        Serial.println("User Validation Failed. Try Again!");
+       blinkNotValid();
   }
 }
 
@@ -100,7 +101,7 @@ void setEncryptedMessage(String s){
   }
 
 void blinkSend(){
-  int count = 6;
+  int count = 4;
      
      //while loop for blinking green LED
      while(count > 0){
@@ -114,6 +115,16 @@ void blinkSend(){
      }
 }
 
+void blinkNotValid(){
+  int count = 3;
+
+  while(count > 0){
+    digitalWrite(12, LOW);
+    delay(delayLED);
+    digitalWrite(12, HIGH);
+    count--;
+  }
+}
 
 //Setup method
 void setup() {
@@ -142,6 +153,7 @@ void loop() {
     setEncryptedMessage(message); // method to encrypt the method
     Wire.beginTransmission(8); // transmit to device #8 (Arduino 2)
     Wire.write(encryptedMessage);   // sends one char/byte at a time
+    Serial.println("Message Sending....");
     Wire.endTransmission();    // stop transmitting
 
     blinkSend();
