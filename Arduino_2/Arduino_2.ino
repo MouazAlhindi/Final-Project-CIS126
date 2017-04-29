@@ -70,7 +70,7 @@ void validateUser(String x){
   }
 
   if(valid == false){
-    digitalWrite(13, LOW);
+    blinkNotValid();
     Serial.println("User Validation Failed. Try Again!");
   }
 }
@@ -139,7 +139,7 @@ void blinkRecieve(){
     int count = 6;
      
      //while loop for blinking green LED
-     while(count > 0){
+     while(count > 0 && valid){
       delay(delayLED);
       digitalWrite(13, LOW);
       digitalWrite(12, HIGH);
