@@ -100,6 +100,22 @@ void setEncryptedMessage(String s){
     }
   }
 
+void blinkMessageRecieved(){
+  int count = 4;
+
+  while(count > 0){
+    delay(delayLED);
+    digitalWrite(12, HIGH);
+    digitalWrite(13, HIGH);
+    delay(delayLED);
+    digitalWrite(12, LOW);
+    digitalWrite(13, LOW);
+    count--;
+  }
+  
+  digitalWrite(13, HIGH);
+}
+
 void blinkSend(){
   int count = 4;
      
@@ -119,6 +135,7 @@ void blinkNotValid(){
   int count = 3;
 
   while(count > 0){
+    delay(delayLED);
     digitalWrite(12, LOW);
     delay(delayLED);
     digitalWrite(12, HIGH);
@@ -164,10 +181,16 @@ void loop() {
 
     if(slaveKey == encryptionKey){
       Serial.println("Message Recieved by Slave Device");
-      Serial.println("value of encryption Key: " + (String)key);
+      Serial.println("value of Slave device encryption Key: " + (String)slaveKey);
+      blinkMessageRecieved();
     } else {
       Serial.println("WARNING: Message Recieved by slave Device");
       Serial.println("Slave device has wrong encryption key");
+      Serial.println("Slave Device may not be validated yet");
+      digitalWrite(13, LOW);
+      blinkNotValid();
+      digitalWrite(12, LOW);
+      digitalWrite(13, HIGH);
     }
   }
 }

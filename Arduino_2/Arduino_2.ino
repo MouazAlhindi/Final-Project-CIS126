@@ -14,6 +14,8 @@ char message[64]; // char array that holds decrypted message
 char encryptedMessage[64]; //char array that hold encrypted message
 int encryptionKey; // Encryption key that is a factor to the encryption logic
 boolean valid = false; // user validation of hardware
+boolean blinkLEDNV = false;
+boolean blinkLEDRec = false;
 int delayLED = 100;  //delay for blinking LED 
 
 
@@ -52,14 +54,30 @@ void setEncryptionKey(){
 }
 
 void blinkNotValid(){
-  int count = 4;
+  int count = 3;
 
   while(count > 0){
+    delay(delayLED);
     digitalWrite(12, LOW);
     delay(delayLED);
     digitalWrite(12, HIGH);
     count--;
   }
+}
+
+void blinkRecieve(){
+    int count = 4;
+     
+     //while loop for blinking green LED
+     while(count > 0){
+      delay(delayLED);
+      digitalWrite(13, LOW);
+      digitalWrite(12, HIGH);
+      delay(delayLED);
+      digitalWrite(13, HIGH);
+      digitalWrite(12, LOW);
+      count--;
+     }
 }
 
 /* VALIDATE USER FUNCTION
@@ -124,20 +142,7 @@ void encryptMessage(){
   }
 }
 
-void blinkRecieve(){
-    int count = 6;
-     
-     //while loop for blinking green LED
-     while(count > 0 && valid){
-      delay(delayLED);
-      digitalWrite(13, LOW);
-      digitalWrite(12, HIGH);
-      delay(delayLED);
-      digitalWrite(13, HIGH);
-      digitalWrite(12, LOW);
-      count--;
-     }  
-}
+
 
 //SETUP FUNCTION
 void setup() {
@@ -150,8 +155,6 @@ void setup() {
   pinMode(12, OUTPUT);
   digitalWrite(13, LOW);
   digitalWrite(12, HIGH);
-
-  blinkNotValid();
 }
 
 
@@ -165,6 +168,16 @@ void loop() {
       String uID = Serial.readString();
       validateUser(uID);
   }
+
+  if(blinkLEDNV == true){
+    blinkNotValid();
+    blinkLEDNV = false;
+  }
+
+  if(blinkLEDRec == true && valid == true){
+    blinkRecieve();
+    blinkLEDRec = false;
+  }
 }
 
 //RECIEVE EVENT FUNCTION
@@ -173,6 +186,7 @@ void loop() {
 void receiveEvent(int howMany) {
 
   if(valid == true){
+    blinkLEDRec = true;
     clearMessages(); //Clear char arrays that hold 
     int count = 0; //Var for loop logic
     Serial.println("Receiving Message");
@@ -183,7 +197,7 @@ void receiveEvent(int howMany) {
       count++; //increment count var
     }
   
-    blinkRecieve();
+    
     decodeMessage(); //Call method to decode the recieved incryption String
     //Print format
     Serial.println("Message Recvied");
@@ -193,7 +207,7 @@ void receiveEvent(int howMany) {
     Wire.write("Message Recieved");
   } else {
       Serial.println("Incoming Message: WARNING! USER MUST BE VALIDATED");
-      blinkNotValid();
+      blinkLEDNV = true;
       clearMessages();
       int i = 0;
       while(0 < Wire.available()){
