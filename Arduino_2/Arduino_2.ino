@@ -53,6 +53,8 @@ void setEncryptionKey(){
   }
 }
 
+//LED indiaction of something going wrong
+//Faulty user id
 void blinkNotValid(){
   int count = 3;
 
@@ -65,6 +67,7 @@ void blinkNotValid(){
   }
 }
 
+//LED indication of reception of message from the master
 void blinkRecieve(){
     int count = 4;
      
@@ -218,6 +221,8 @@ void receiveEvent(int howMany) {
   }
 }
 
+//Request event
+//Called when the Master Reqest a byte from the slave
 void requestEvent(){
   Wire.write(encryptionKey);
 }

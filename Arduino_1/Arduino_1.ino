@@ -100,6 +100,7 @@ void setEncryptedMessage(String s){
     }
   }
 
+//LED indiaction of message being recieved
 void blinkMessageRecieved(){
   int count = 4;
 
@@ -116,6 +117,7 @@ void blinkMessageRecieved(){
   digitalWrite(13, HIGH);
 }
 
+//LED indication of message sending
 void blinkSend(){
   int count = 4;
      
@@ -131,6 +133,8 @@ void blinkSend(){
      }
 }
 
+//LED indiaction of something being wrong
+//Either wrong user id, or something wrong on the slave reciever side
 void blinkNotValid(){
   int count = 3;
 
